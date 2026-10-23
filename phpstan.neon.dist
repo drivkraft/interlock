@@ -1,0 +1,21 @@
+parameters:
+    level: 7
+    paths:
+        - src
+        - config
+    tmpDir: build/phpstan
+    ignoreErrors:
+        # Class names are derived from module conventions (Module\X\Models\Post <=> PostFactory),
+        # like Laravel's own guessers, so they cannot be proven to be class-strings statically.
+        -
+            identifier: return.type
+            message: '#::qualifyModel\(\) should return class-string but returns string\.#'
+            path: src/Console/Make/Concerns/GeneratesInModule.php
+        -
+            identifier: argument.type
+            message: '#^Parameter \#1 \$callback of static method .*::guess(FactoryNames|ModelNames)Using\(\)#'
+            path: src/FactoryResolver.php
+        -
+            identifier: argument.type
+            message: '#^Parameter \#1 \$callback of static method .*DiscoverEvents::guessClassNamesUsing\(\)#'
+            path: src/ModuleManifest.php

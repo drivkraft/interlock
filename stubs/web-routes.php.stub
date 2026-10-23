@@ -1,0 +1,7 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+| Loaded inside the "web" middleware group by drivkraft/interlock.
+*/

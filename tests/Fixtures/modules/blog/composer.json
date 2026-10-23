@@ -1,0 +1,10 @@
+{
+    "name": "fixture/blog",
+    "autoload": {
+        "psr-4": {
+            "Fixture\\Blog\\": "src/",
+            "Fixture\\Blog\\Database\\Factories\\": "database/factories/",
+            "Fixture\\Blog\\Database\\Seeders\\": "database/seeders/"
+        }
+    }
+}

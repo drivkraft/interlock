@@ -1,0 +1,122 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "drivkraft/interlock",
+    "description": "Lightweight architecture manager for structuring Laravel apps with modules.",
+    "keywords": [
+        "laravel",
+        "drivkraft",
+        "interlock",
+        "module",
+        "modular",
+        "modules",
+        "architecture",
+        "arch",
+        "design"
+    ],
+    "homepage": "https://github.com/drivkraft/interlock",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kim Eric Helle",
+            "email": "kim.helle@signl.no",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+        "laravel/framework": "^13.0",
+        "laravel/prompts": "^0.3.25",
+        "symfony/finder": "^7.4||^8.0",
+        "wikimedia/composer-merge-plugin": "^2.1"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.9",
+        "laravel/pao": "^1.0",
+        "laravel/pint": "^1.29",
+        "livewire/livewire": "^4.1",
+        "lorisleiva/laravel-actions": "^2.13",
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^5.0",
+        "pestphp/pest-plugin-laravel": "^5.0",
+        "pestphp/pest-plugin-type-coverage": "^5.0",
+        "phpstan/extension-installer": "^1.4",
+        "spatie/laravel-data": "^4.23"
+    },
+    "autoload": {
+        "psr-4": {
+            "Drivkraft\\Interlock\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fixture\\Blog\\": "tests/Fixtures/modules/blog/src/",
+            "Fixture\\Blog\\Database\\Factories\\": "tests/Fixtures/modules/blog/database/factories/",
+            "Fixture\\Blog\\Database\\Seeders\\": "tests/Fixtures/modules/blog/database/seeders/",
+            "Drivkraft\\Interlock\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "prepare": [
+            "@php vendor/bin/testbench package:discover --ansi"
+        ],
+        "build": [
+            "@php vendor/bin/testbench workbench:build --ansi"
+        ],
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "lint": [
+            "vendor/bin/pint --parallel"
+        ],
+        "lint:check": [
+            "vendor/bin/pint --parallel --test"
+        ],
+        "analyse": [
+            "vendor/bin/phpstan analyse"
+        ],
+        "test:types": [
+            "vendor/bin/pest --type-coverage --min=100"
+        ],
+        "test:unit": [
+            "vendor/bin/pest --parallel"
+        ],
+        "test": [
+            "@analyse",
+            "@lint:check",
+            "@test:types",
+            "@test:unit"
+        ],
+        "clear": [
+            "@php vendor/bin/testbench package:purge-skeleton --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Drivkraft\\Interlock\\InterlockServiceProvider"
+            ],
+            "aliases": {
+                "Interlock": "Drivkraft\\Interlock\\Facades\\Interlock"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true,
+            "wikimedia/composer-merge-plugin": false
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

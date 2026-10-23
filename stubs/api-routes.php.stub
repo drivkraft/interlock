@@ -1,0 +1,7 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+| Loaded inside the "api" middleware group with the /api prefix by drivkraft/interlock.
+*/
