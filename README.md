@@ -52,7 +52,7 @@ return [
     'source' => 'src',                   // PHP folder inside each module
     'namespace' => 'Module',             // root namespace for new modules
     'tests_base' => 'Tests\TestCase',    // exposed to custom stubs
-    'stubs' => null,                     // custom module:make stubs, null = package stubs
+    'stubs' => null,                     // custom make:module stubs, null = package stubs
 
     // Folder per generator, relative to `source`
     'directories' => [
@@ -94,7 +94,7 @@ return [
 ## Quick Start
 
 ```bash
-php artisan module:make billing
+php artisan make:module billing
 php artisan module:model Invoice --module=billing -mf
 php artisan module:controller InvoiceController --module=billing
 php artisan migrate
@@ -114,7 +114,7 @@ modules/billing/
 └── tests/
 ```
 
-No registration needed: the provider, routes, views, translations and migrations are discovered. `module:make` runs `composer dump-autoload` (skip with `--no-dump`) and asks which parts to create; without interaction it creates all except `--api`.
+No registration needed: the provider, routes, views, translations and migrations are discovered. `make:module` runs `composer dump-autoload` (skip with `--no-dump`) and asks which parts to create; without interaction it creates all except `--api`.
 
 ## How-to Guides
 
@@ -168,7 +168,7 @@ php artisan module:seed --module=billing                        # Module\Billing
 php artisan module:seed --module=billing --class=InvoiceSeeder
 ```
 
-`module:make` creates the module's `DatabaseSeeder` with the seeders part.
+`make:module` creates the module's `DatabaseSeeder` with the seeders part.
 
 ### Custom module stubs
 
@@ -180,11 +180,11 @@ php artisan module:seed --module=billing --class=InvoiceSeeder
 ],
 ```
 
-With custom stubs, `module:make` writes the whole map and skips the parts prompt. Paths and contents support the [placeholders](#stub-placeholders). Include a `composer.json` with a PSR-4 entry for `source`.
+With custom stubs, `make:module` writes the whole map and skips the parts prompt. Paths and contents support the [placeholders](#stub-placeholders). Include a `composer.json` with a PSR-4 entry for `source`.
 
 ### Cache discovery in production
 
-`php artisan optimize` runs `module:cache`, and `optimize:clear` runs `module:clear`. While cached, new modules and discovered classes are ignored until you run `module:clear` (`module:make` does this for you).
+`php artisan optimize` runs `module:cache`, and `optimize:clear` runs `module:clear`. While cached, new modules and discovered classes are ignored until you run `module:clear` (`make:module` does this for you).
 
 ### Find modules from code
 
@@ -215,7 +215,7 @@ Interlock::moduleForPath(__FILE__);
 
 | Command | Description |
 | --- | --- |
-| `module:make {name}` | Create a module. `--web`, `--api`, `--views`, `--lang`, `--migrations`, `--factories`, `--seeders`, `--tests`, `--all`, `--no-dump`. Existing files are skipped. |
+| `make:module {name}` | Create a module. `--web`, `--api`, `--views`, `--lang`, `--migrations`, `--factories`, `--seeders`, `--tests`, `--all`, `--no-dump`. Existing files are skipped. |
 | `module:list` | List modules with namespace and path. |
 | `module:cache` / `module:clear` | Write or delete the discovery cache. Hooked into `optimize` / `optimize:clear`. |
 | `module:seed` | `db:seed` for a module. |
@@ -240,7 +240,7 @@ Generators mirroring `make:*`: `cast`, `channel`, `class`, `command`, `component
 
 ### Stub placeholders
 
-| Placeholder | `module:make billing` |
+| Placeholder | `make:module billing` |
 | --- | --- |
 | `StubModuleName` / `StubModuleNameSingular` / `StubModuleNamePlural` | `billing` / `billing` / `billings` |
 | `StubClassNamePrefix` | `Billing` |

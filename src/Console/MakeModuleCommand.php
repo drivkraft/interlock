@@ -28,10 +28,10 @@ use function Laravel\Prompts\multiselect;
  * The parts (--web, --api, --views, ...) only apply to the package stubs; custom stubs from
  * config('interlock.stubs') are always written in full.
  */
-#[AsCommand(name: 'module:make')]
+#[AsCommand(name: 'make:module')]
 class MakeModuleCommand extends Command implements PromptsForMissingInput
 {
-    protected $signature = 'module:make
+    protected $signature = 'make:module
         {name : The name of the module}
         {--web : Create routes/web.php}
         {--api : Create routes/api.php}
