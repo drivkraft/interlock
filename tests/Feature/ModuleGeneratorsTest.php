@@ -36,7 +36,7 @@ afterEach(function (): void {
  */
 function makeModule(string $name): string
 {
-    test()->artisan('module:make', ['name' => $name, '--all' => true, '--no-dump' => true])->assertSuccessful();
+    test()->artisan('make:module', ['name' => $name, '--all' => true, '--no-dump' => true])->assertSuccessful();
 
     return test()->modulesPath.'/'.$name;
 }
@@ -191,7 +191,7 @@ it('does not ask for related files when options are passed', function (): void {
 });
 
 it('asks for the module name and parts when not given', function (): void {
-    $this->artisan('module:make', ['--no-dump' => true])
+    $this->artisan('make:module', ['--no-dump' => true])
         ->expectsQuestion('What should the module be called?', 'Shop')
         ->expectsQuestion('Which parts should the module have?', ['api', 'migrations'])
         ->assertSuccessful();
@@ -207,14 +207,14 @@ it('asks for the module name and parts when not given', function (): void {
 });
 
 it('creates only the parts passed as options without asking', function (): void {
-    $this->artisan('module:make', ['name' => 'shop', '--web' => true, '--no-dump' => true])->assertSuccessful();
+    $this->artisan('make:module', ['name' => 'shop', '--web' => true, '--no-dump' => true])->assertSuccessful();
 
     expect($this->modulesPath.'/shop/routes/web.php')->toBeFile()
         ->and($this->modulesPath.'/shop/database')->not->toBeDirectory();
 });
 
 it('creates the default parts when running without interaction', function (): void {
-    $this->artisan('module:make', ['name' => 'shop', '--no-dump' => true, '--no-interaction' => true])->assertSuccessful();
+    $this->artisan('make:module', ['name' => 'shop', '--no-dump' => true, '--no-interaction' => true])->assertSuccessful();
 
     expect($this->modulesPath.'/shop/routes/web.php')->toBeFile()
         ->and($this->modulesPath.'/shop/tests')->toBeDirectory()
@@ -298,8 +298,8 @@ it('registers the module generators under the module prefix', function (): void 
 });
 
 it('registers the module management commands under the module prefix', function (): void {
-    expect(Artisan::all())->toHaveKeys(['module:make', 'module:list', 'module:cache', 'module:clear'])
-        ->not->toHaveKeys(['make:module', 'modules:list', 'modules:cache', 'modules:clear']);
+    expect(Artisan::all())->toHaveKeys(['make:module', 'module:list', 'module:cache', 'module:clear'])
+        ->not->toHaveKeys(['modules:list', 'modules:cache', 'modules:clear']);
 });
 
 it('does not add generated providers to bootstrap/providers.php', function (): void {
@@ -354,7 +354,7 @@ it('skips existing files when the module already exists', function (): void {
 
     File::put("{$module}/routes/web.php", '<?php // custom');
 
-    $this->artisan('module:make', ['name' => 'shop', '--web' => true, '--no-dump' => true])
+    $this->artisan('make:module', ['name' => 'shop', '--web' => true, '--no-dump' => true])
         ->expectsOutputToContain('already exists')
         ->assertSuccessful();
 
@@ -367,7 +367,7 @@ it('writes custom stubs from config', function (): void {
 
     config(['interlock.stubs' => ['README-StubModuleName.md' => $stub]]);
 
-    $this->artisan('module:make', ['name' => 'shop', '--no-dump' => true])->assertSuccessful();
+    $this->artisan('make:module', ['name' => 'shop', '--no-dump' => true])->assertSuccessful();
 
     expect(File::get($this->modulesPath.'/shop/README-shop.md'))->toBe('Shop in Module')
         ->and($this->modulesPath.'/shop/composer.json')->not->toBeFile();
@@ -376,7 +376,7 @@ it('writes custom stubs from config', function (): void {
 it('fails when a custom stub does not exist', function (): void {
     config(['interlock.stubs' => ['README.md' => $this->modulesPath.'/missing.stub']]);
 
-    $this->artisan('module:make', ['name' => 'shop', '--no-dump' => true])
+    $this->artisan('make:module', ['name' => 'shop', '--no-dump' => true])
         ->expectsOutputToContain('Stub file not found')
         ->assertFailed();
 });

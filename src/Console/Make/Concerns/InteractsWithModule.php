@@ -55,7 +55,7 @@ trait InteractsWithModule
             $modules = $this->getLaravel()->make(ModuleRegistry::class)->modules()->keys()->all();
 
             if ($modules === []) {
-                throw new InvalidOptionException('No modules found. Create one with php artisan module:make.');
+                throw new InvalidOptionException('No modules found. Create one with php artisan make:module.');
             }
 
             $input->setOption('module', select(
