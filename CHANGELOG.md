@@ -2,6 +2,10 @@
 
 All notable changes to `drivkraft/interlock` will be documented in this file.
 
+## PHP 8.4 Support - 2026-10-24
+
+Added support for php 8.4.
+
 ## Release v1 - 2026-10-23
 
 ### Modules
