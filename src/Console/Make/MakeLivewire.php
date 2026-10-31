@@ -18,6 +18,7 @@ use function Laravel\Prompts\text;
 /**
  * module:livewire orders --kind=pages => make:livewire shop.pages::orders, with every make:livewire option.
  * Works because each module (and each interlock.livewire.namespaces entry) is a Livewire namespace.
+ * module:livewire PostForm --form => module:livewire-form, a Livewire\Form object in {source}/Livewire/Forms.
  */
 class MakeLivewire extends MakeCommand
 {
@@ -31,7 +32,11 @@ class MakeLivewire extends MakeCommand
         $this->configureModule();
 
         $this->getDefinition()->addOption(
-            new InputOption('kind', null, InputOption::VALUE_REQUIRED, 'component, or a interlock.livewire.namespaces key such as pages'),
+            new InputOption('kind', null, InputOption::VALUE_REQUIRED, 'component, form, or a interlock.livewire.namespaces key such as pages'),
+        );
+
+        $this->getDefinition()->addOption(
+            new InputOption('form', null, InputOption::VALUE_NONE, 'Create a Livewire form object instead of a component'),
         );
     }
 
@@ -42,7 +47,7 @@ class MakeLivewire extends MakeCommand
     {
         $this->interactWithModule($input, $output);
 
-        if ($input->getOption('kind') || str_contains((string) $input->getArgument('name'), '::')) {
+        if ($input->getOption('form') || $input->getOption('kind') || str_contains((string) $input->getArgument('name'), '::')) {
             return;
         }
 
@@ -54,6 +59,8 @@ class MakeLivewire extends MakeCommand
             $kinds[$name] = Str::headline(Str::singular($name))." ({$module}.{$name}::)";
         }
 
+        $kinds['form'] = 'Form object ('.$this->module()->qualify('Livewire\\Forms').')';
+
         $input->setOption('kind', select(label: 'What kind of component?', options: $kinds, default: 'component'));
     }
 
@@ -63,6 +70,13 @@ class MakeLivewire extends MakeCommand
 
         if (! is_string($name) || $name === '') {
             $name = text('What should the component be named?', required: true);
+        }
+
+        if ($this->option('form') || $this->option('kind') === 'form') {
+            return $this->call('module:livewire-form', [
+                'name' => collect(preg_split('#[./\\\\]#', $name) ?: [])->map(fn (string $segment): string => Str::studly($segment))->implode('/'),
+                '--module' => $this->module()->name,
+            ]);
         }
 
         if (! str_contains($name, '::')) {

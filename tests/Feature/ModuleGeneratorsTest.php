@@ -229,7 +229,7 @@ it('generates livewire components in the chosen module', function (): void {
 
     $this->artisan('module:livewire', ['name' => 'order-list', '--class' => true])
         ->expectsChoice('Which module?', 'shop', ['blog' => 'blog', 'shop' => 'shop'])
-        ->expectsChoice('What kind of component?', 'component', ['component' => 'Component (shop::)', 'pages' => 'Page (shop.pages::)', 'layouts' => 'Layout (shop.layouts::)'])
+        ->expectsChoice('What kind of component?', 'component', ['component' => 'Component (shop::)', 'pages' => 'Page (shop.pages::)', 'layouts' => 'Layout (shop.layouts::)', 'form' => 'Form object (Module\\Shop\\Livewire\\Forms)'])
         ->assertSuccessful();
 
     expect(File::get("{$module}/src/Livewire/OrderList.php"))->toContain('namespace Module\\Shop\\Livewire;')
@@ -255,6 +255,38 @@ it('generates single file livewire pages in the pages directory', function (): v
     $this->artisan('module:livewire', ['name' => 'orders', '--module' => 'shop', '--kind' => 'pages', '--sfc' => true, '--emoji' => 'false'])->assertSuccessful();
 
     expect("{$module}/resources/views/pages/orders.blade.php")->toBeFile();
+});
+
+it('generates livewire form objects in the module', function (): void {
+    $module = makeModule('shop');
+
+    $this->app->register(InterlockServiceProvider::class, force: true);
+
+    $this->artisan('module:livewire', ['name' => 'checkout.post-form', '--module' => 'shop', '--form' => true])->assertSuccessful();
+
+    expect(File::get("{$module}/src/Livewire/Forms/Checkout/PostForm.php"))
+        ->toContain('namespace Module\\Shop\\Livewire\\Forms\\Checkout;')
+        ->toContain('class PostForm extends Form');
+});
+
+it('generates livewire form objects when form is chosen as the kind', function (): void {
+    $module = makeModule('shop');
+
+    $this->app->register(InterlockServiceProvider::class, force: true);
+
+    $this->artisan('module:livewire', ['name' => 'PostForm', '--module' => 'shop'])
+        ->expectsChoice('What kind of component?', 'form', ['component' => 'Component (shop::)', 'pages' => 'Page (shop.pages::)', 'layouts' => 'Layout (shop.layouts::)', 'form' => 'Form object (Module\\Shop\\Livewire\\Forms)'])
+        ->assertSuccessful();
+
+    expect(File::get("{$module}/src/Livewire/Forms/PostForm.php"))->toContain('namespace Module\\Shop\\Livewire\\Forms;');
+});
+
+it('generates livewire form objects with module:livewire-form', function (): void {
+    $module = makeModule('shop');
+
+    $this->artisan('module:livewire-form', ['name' => 'PostForm', '--module' => 'shop'])->assertSuccessful();
+
+    expect(File::get("{$module}/src/Livewire/Forms/PostForm.php"))->toContain('class PostForm extends Form');
 });
 
 it('rejects unknown livewire kinds', function (): void {
@@ -293,7 +325,7 @@ it('lets the directories be changed and added in config', function (): void {
 });
 
 it('registers the module generators under the module prefix', function (): void {
-    expect(Artisan::all())->toHaveKeys(['module:model', 'module:action', 'module:data', 'module:livewire', 'module:seed'])
+    expect(Artisan::all())->toHaveKeys(['module:model', 'module:action', 'module:data', 'module:livewire', 'module:livewire-form', 'module:seed'])
         ->not->toHaveKey('mod:model');
 });
 

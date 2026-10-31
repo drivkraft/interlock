@@ -94,7 +94,7 @@ class InterlockServiceProvider extends ServiceProvider
                 ModuleClearCommand::class,
                 ModuleListCommand::class,
                 ...$this->generators,
-                ...(class_exists(Livewire::class) ? [Make\MakeLivewire::class] : []),
+                ...(class_exists(Livewire::class) ? [Make\MakeLivewire::class, Make\MakeLivewireForm::class] : []),
                 ...$this->manifest()->get('commands'),
             ]);
         }

@@ -109,7 +109,8 @@ return [
     | modules/shop/{components}. Every entry in 'namespaces' adds a sub-namespace
     | per module, mirroring livewire.component_namespaces: 'pages' gives
     | shop.pages::orders in modules/shop/resources/views/pages. Class-based
-    | components live in {source}/Livewire (or Livewire/Pages, ...).
+    | components live in {source}/Livewire (or Livewire/Pages, ...), and
+    | form objects (module:livewire --form) in {source}/Livewire/Forms.
     | Ignored when livewire/livewire is not installed.
     |
     */

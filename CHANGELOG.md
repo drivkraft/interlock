@@ -2,9 +2,17 @@
 
 All notable changes to `drivkraft/interlock` will be documented in this file.
 
+<<<<<<< HEAD
 ## PHP 8.4 Support - 2026-10-24
 
 Added support for php 8.4.
+=======
+## Unreleased
+
+### Commands
+
+- `module:livewire --form` creates a Livewire form object in the module's `src/Livewire/Forms`. You can also choose *Form object* when prompted for the kind, or run `module:livewire-form` directly.
+>>>>>>> f9013aa (chore: creation of livewire form)
 
 ## Release v1 - 2026-10-23
 

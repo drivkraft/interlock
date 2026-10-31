@@ -159,7 +159,7 @@ Every module's `routes/tenant.php` now loads in that group. Route files not in t
 
 - `lang/en/messages.php` → `__('billing::messages.paid')`. JSON translations are merged unprefixed.
 - `src/View/Components` and `resources/views/components` → `<x-billing::invoice-card />`.
-- With Livewire installed, each module is a namespace: `<livewire:billing::invoice-list />`. Each `livewire.namespaces` entry adds a sub-namespace (`billing.pages::invoices`), whose folder is also a view and anonymous component namespace (`<x-billing.layouts::app>`). Generate with `module:livewire {name} --module=billing [--kind=pages]`; all `make:livewire` options work.
+- With Livewire installed, each module is a namespace: `<livewire:billing::invoice-list />`. Each `livewire.namespaces` entry adds a sub-namespace (`billing.pages::invoices`), whose folder is also a view and anonymous component namespace (`<x-billing.layouts::app>`). Generate with `module:livewire {name} --module=billing [--kind=pages]`; all `make:livewire` options work. Add `--form` (or choose *Form object* when prompted) to create a Livewire form object in `src/Livewire/Forms` instead: `module:livewire InvoiceForm --module=billing --form`, also available as `module:livewire-form`.
 
 ### Seed a module
 
@@ -221,7 +221,7 @@ Interlock::moduleForPath(__FILE__);
 | `module:seed` | `db:seed` for a module. |
 | `module:action`, `module:data` | See [Actions and data objects](#actions-and-data-objects). |
 
-Generators mirroring `make:*`: `cast`, `channel`, `class`, `command`, `component`, `controller`, `enum`, `event`, `exception`, `factory`, `interface`, `job`, `job-middleware`, `listener`, `livewire`, `mail`, `middleware`, `migration`, `model`, `notification`, `observer`, `policy`, `provider`, `request`, `resource`, `rule`, `scope`, `seeder`, `test`, `trait`.
+Generators mirroring `make:*`: `cast`, `channel`, `class`, `command`, `component`, `controller`, `enum`, `event`, `exception`, `factory`, `interface`, `job`, `job-middleware`, `listener`, `livewire`, `livewire-form`, `mail`, `middleware`, `migration`, `model`, `notification`, `observer`, `policy`, `provider`, `request`, `resource`, `rule`, `scope`, `seeder`, `test`, `trait`.
 
 ### What gets discovered
 

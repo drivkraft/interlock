@@ -36,6 +36,7 @@ Use this skill when a Laravel application uses `drivkraft/interlock`, or when co
 - all `make:*` options work; `module:command` prefixes signatures with the module name, `module:listener --event=InvoicePaid` resolves to the module's `Events` namespace
 - create actions with `php artisan module:action PlaceOrder --module=billing` (in `src/Actions` with a `handle()` method; uses `AsAction` if lorisleiva/laravel-actions is installed; no suffix is added)
 - create data objects with `php artisan module:data InvoiceData --module=billing` (in `src/Data`; extends `Spatie\LaravelData\Data` if spatie/laravel-data is installed, otherwise a `final readonly` class; no suffix is added)
+- create Livewire components with `php artisan module:livewire invoice-list --module=billing [--kind=pages]` (Livewire only; all `make:livewire` options work) and Livewire form objects with `php artisan module:livewire InvoiceForm --module=billing --form` or `module:livewire-form InvoiceForm --module=billing` (in `src/Livewire/Forms`, extends `Livewire\Form`)
 - seed with `php artisan module:seed --module=billing [--class=InvoiceSeeder]`; without `--class` it runs the module's `database/seeders/DatabaseSeeder.php` (created by `module:make` with the seeders part), so register new seeders in its `run()` method
 
 ### 4. Use discovered resources
